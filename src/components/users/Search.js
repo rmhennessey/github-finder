@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types'
+import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext'
 
 
-const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {  // these are being pass in as props, so we can destructure and place here
+const Search = ({ showClear, clearUsers, setAlert }) => {  // these are being pass in as props, so we can destructure and place here
+    const githubContext = useContext(GithubContext)
 
     // This is what we used to have to do with state 👇
 
@@ -19,7 +21,7 @@ const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {  // these
         if (text === '') {
             setAlert('Please enter something', 'light');
         } else {
-            searchUsers(text)
+            githubContext.searchUsers(text)
             setText('');
         }
     }
@@ -55,7 +57,6 @@ const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {  // these
 }
 
 Search.propTypes = {
-    searchUsers: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
     showClear: PropTypes.bool.isRequired,
     setAlert: PropTypes.func.isRequired,
