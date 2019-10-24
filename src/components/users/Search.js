@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import GithubContext from '../../context/github/githubContext'
+import AlertContext from '../../context/alert/alertContext'
 
 
-const Search = ({ showClear, clearUsers, setAlert }) => {  // these are being pass in as props, so we can destructure and place here
+
+const Search = () => {  // these are being pass in as props, so we can destructure and place here
     const githubContext = useContext(GithubContext)
+    const alertContext = useContext(AlertContext)
 
     // This is what we used to have to do with state 👇
 
@@ -19,7 +21,7 @@ const Search = ({ showClear, clearUsers, setAlert }) => {  // these are being pa
     const onSubmit = (e) => {
         e.preventDefault();
         if (text === '') {
-            setAlert('Please enter something', 'light');
+            alertContext.setAlert('Please enter something', 'light');
         } else {
             githubContext.searchUsers(text)
             setText('');
@@ -44,22 +46,16 @@ const Search = ({ showClear, clearUsers, setAlert }) => {  // these are being pa
                     className="btn btn-dark btn-block"
                 />
             </form>
-            {showClear &&
+            {githubContext.users.length > 0 &&
                 < button
                     className="btn btn-light btn-block"
-                    onClick={clearUsers}
+                    onClick={githubContext.clearUsers}
                 >
                     Clear
                     </button>
             }
         </div>
     )
-}
-
-Search.propTypes = {
-    clearUsers: PropTypes.func.isRequired,
-    showClear: PropTypes.bool.isRequired,
-    setAlert: PropTypes.func.isRequired,
 }
 
 export default Search
